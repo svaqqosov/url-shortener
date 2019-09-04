@@ -1,0 +1,48 @@
+{
+  "extends": "airbnb-base",
+  "plugins": [
+    "prettier"
+  ],
+  "rules": {
+    "no-console": "off",
+    "comma-dangle": [
+      "error",
+      {
+        "arrays": "never",
+        "objects": "never",
+        "imports": "never",
+        "exports": "never",
+        "functions": "ignore"
+      }
+    ],
+    "prefer-destructuring": [
+      "error",
+      {
+        "array": true,
+        "object": false
+      },
+      {
+        "enforceForRenamedProperties": false
+      }
+    ],
+    "max-len": [
+      "error",
+      {
+        "ignoreComments": true,
+        "code": 100
+      }
+    ],
+    "import/no-unresolved": [
+      "error",
+      {
+        "ignore": [
+          "^@"
+        ]
+      }
+    ]
+  },
+  "globals": {
+    "ApiResponse": false,
+    "ApiError": false
+  }
+}

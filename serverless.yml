@@ -1,0 +1,52 @@
+service: url-shortener
+
+provider:
+  name: aws
+  runtime: nodejs10.x   # set node.js runtime
+  stage: ${opt:stage, 'dev'}
+  region: 'ap-northeast-2'
+  memorySize: 1024   # set the maximum memory of the Lambdas in Megabytes
+  timeout: 10   # the timeout is 10 seconds (default is 6 seconds)
+  versionFunctions: false # disable creating new version on new every new deployment
+  environment:
+    NODE_ENV: ${self:provider.stage}
+    DEFAULT_PAGINATION_LIMIT: '10'
+
+  iamRoleStatements:
+    - Effect: Allow
+      Resource: "*"
+      Action:
+        - dynamodb:GetItem
+        - dynamodb:PutItem
+        - dynamodb:Scan
+    - Effect: Allow
+      Action:
+        - sts:AssumeRole
+      Resource: "*"
+    - Effect: Allow
+      Action:
+        - lambda:InvokeFunction
+      Resource: "*"
+
+functions:
+  app:
+    handler: lambda.handler
+    events:
+      - http:
+          path: /
+          method: ANY
+          cors: true
+      - http:
+          path: /{proxy+}
+          method: ANY
+          cors: true
+
+package:
+  excludeDevDependencies: false
+  exclude:
+    - apidoc/**
+    - .**
+
+plugins:
+  - serverless-offline
+  - serverless-prune-plugin

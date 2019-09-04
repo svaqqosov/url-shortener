@@ -1,0 +1,8 @@
+apidoc.json
+node_modules
+npm-debug.log
+.serverless
+src/routes/route_names.json
+.env*
+.webpack
+*.swp

@@ -1,0 +1,8 @@
+node_modules
+apidoc
+.vscode
+npm-debug.log
+.serverless
+.env*
+.webpack
+*.swp
