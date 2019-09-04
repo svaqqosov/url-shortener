@@ -1,0 +1,53 @@
+{
+  "name": "url-shortener",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "start": "NODE_ENV=local nodemon server",
+    "start:lambda": "sls offline start --skipCacheInvalidation",
+    "lint": "npx eslint --ext js .",
+    "test": "NODE_ENV=test mocha --timeout 10000 --exit",
+    "deploy": "serverless deploy -f app -s dev --aws-profile dev"
+  },
+  "_moduleAliases": {
+    "@": ".",
+    "@src": "./src",
+    "@controllers": "./src/controllers",
+    "@functions": "./src/functions",
+    "@middlewares": "./src/middlewares",
+    "@models": "./src/models",
+    "@routes": "./src/routes",
+    "@helper": "./src/helper"
+  },
+  "author": "Sardorjon Vakkosov",
+  "license": "ISC",
+  "dependencies": {
+    "@hapi/joi": "^15.1.1",
+    "apidoc": "^0.17.7",
+    "aws-serverless-express": "^3.3.6",
+    "body-parser": "^1.19.0",
+    "dotenv": "^8.1.0",
+    "express": "^4.17.1",
+    "express-validation": "^1.0.2",
+    "js-crc": "^0.2.0",
+    "module-alias": "^2.2.1",
+    "moment": "^2.24.0",
+    "serverless": "^1.50.0",
+    "serverless-http": "^2.1.0",
+    "uuid": "^3.3.2"
+  },
+  "devDependencies": {
+    "aws-sdk": "2.259.1",
+    "chai": "^4.1.2",
+    "chai-http": "4.0.0",
+    "eslint": "^4.18.2",
+    "eslint-config-airbnb-base": "^12.1.0",
+    "eslint-config-prettier": "^2.9.0",
+    "eslint-plugin-import": "2.12.0",
+    "eslint-plugin-prettier": "^2.6.2",
+    "prettier": "1.13.5",
+    "serverless-offline": "^3.25.4",
+    "serverless-prune-plugin": "1.3.1"
+  }
+}

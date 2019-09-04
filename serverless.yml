@@ -46,10 +46,20 @@ resources:
         AttributeDefinitions:
           - AttributeName: key
             AttributeType: S
+          - AttributeName: longUrl
+            AttributeType: S
         KeySchema:
           - AttributeName: key
             KeyType: HASH
         BillingMode: PAY_PER_REQUEST
+        GlobalSecondaryIndexes:
+          - IndexName: LognUrlIndex
+            KeySchema:
+              - AttributeName: longUrl
+                KeyType: HASH
+            Projection:
+              ProjectionType: ALL
+
 
 functions:
   app:

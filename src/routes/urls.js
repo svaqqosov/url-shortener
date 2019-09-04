@@ -10,6 +10,6 @@ router.route('/').post(validate(validations.create), apiByVersion(ctrl, 'create'
 
 router.route('/').get(apiByVersion(ctrl, 'list'));
 
-router.route('/:id').get(validate(validations.getAndDelete), apiByVersion(ctrl, 'load'));
+router.route('/:key').get(validate(validations.getAndDelete), apiByVersion(ctrl, 'load'));
 
 module.exports = router;

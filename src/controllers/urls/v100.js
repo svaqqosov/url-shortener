@@ -2,13 +2,18 @@ const UrlModel = require('@models/url');
 
 const create = async (req, res, next) => {
   try {
-    const local = {};
-    local.url = req.query.url;
-    console.log(local);
-
     const URL = new UrlModel();
-    const item = await URL.createItem(local);
-    res.status(201).json({ item });
+
+    const local = {};
+    local.longUrl = req.query.url;
+    let item = await URL.getItemByIndex(local.longUrl);
+    if (item) {
+      res.status(201).json({ url: URL.getFullUrl(item) });
+      return;
+    }
+
+    item = await URL.createItem(local);
+    res.status(201).json({ url: URL.getFullUrl(item) });
   } catch (err) {
     console.log(err);
     next(err);
@@ -17,17 +22,18 @@ const create = async (req, res, next) => {
 
 const load = async (req, res, next) => {
   try {
-    const item = await URL.getItem(req.query.url).exec();
-    if (item) {
+    const URL = new UrlModel();
+    const item = await URL.getItem(req.params.key);
+    if (!item) {
       res.status(404).send({ msgCode: 'NOT_FOUND' });
       return;
     }
-    res.redirect(item.url);
+    res.redirect(item.longUrl);
   } catch (err) {
+    console.log(err);
     next(err);
   }
 };
-
 
 module.exports = {
   create,

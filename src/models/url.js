@@ -21,7 +21,7 @@ class URL {
     this.tableName = (isLocal()) ? 'urls-dev' : `urls-${process.env.NODE_ENV}`;
     this.fillable = [
       'key',
-      'url',
+      'longUrl',
       'visits'
     ];
   }
@@ -49,7 +49,9 @@ class URL {
     try {
       const paramsGet = {
         TableName: this.tableName,
-        Key: key
+        Key: {
+          key
+        }
       };
       const res = await dynamoDb.get(paramsGet).promise();
       if (!res.Item) {
@@ -70,9 +72,8 @@ class URL {
    */
   async createItem(data) {
     try {
-      console.log(this.tableName);
       const localData = this.filterFields(data);
-      localData.key = crc32(data.url);
+      localData.key = crc32(data.longUrl);
       const datetime = moment(Date.now()).format('YYYY-MM-DD HH:mm:ss');
       localData.createdAt = datetime;
       localData.updatedAt = localData.createdAt;
@@ -113,6 +114,34 @@ class URL {
       return [];
     }
   }
+  /**
+   * Get item by key
+   *
+   * @param {*} Type Object map key:value
+   */
+  async getItemByIndex(longUrl) {
+    try {
+      const paramsGet = {
+        TableName: this.tableName,
+        IndexName: 'LognUrlIndex',
+        KeyConditionExpression: 'longUrl = :longUrl',
+        ExpressionAttributeValues: {
+          ':longUrl': longUrl
+        }
+      };
+      const res = await dynamoDb.query(paramsGet).promise();
+      console.log(res);
+      if (!res.Items || res.Count < 1) {
+        return null;
+      }
+      return res.Items[0];
+    } catch (err) {
+      console.log('err', err);
+      return null;
+    }
+  }
+  getFullUrl(item) {
+    return `${process.env.HOSTNAME}/${item.key}`;
+  }
 }
-
 module.exports = URL;

@@ -5,6 +5,6 @@ const router = express.Router();
 router.use(bodyParser.json());
 router.use(bodyParser.urlencoded({ extended: true }));
 
-router.use('/urls', require('./urls'));
+router.use('/', require('./urls'));
 
 module.exports = router;
