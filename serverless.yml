@@ -16,9 +16,18 @@ provider:
     - Effect: Allow
       Resource: "*"
       Action:
+        - dynamodb:DeleteItem
         - dynamodb:GetItem
+        - dynamodb:Query
+        - dynamodb:BatchGetItem
+        - dynamodb:BatchWriteItem
         - dynamodb:PutItem
+        - dynamodb:UpdateItem
         - dynamodb:Scan
+    - Effect: Allow
+      Action:
+        - states:StartExecution
+      Resource: "*"
     - Effect: Allow
       Action:
         - sts:AssumeRole
@@ -27,6 +36,20 @@ provider:
       Action:
         - lambda:InvokeFunction
       Resource: "*"
+
+resources:
+  Resources:
+    urlsTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: urls-${self:provider.stage}
+        AttributeDefinitions:
+          - AttributeName: key
+            AttributeType: S
+        KeySchema:
+          - AttributeName: key
+            KeyType: HASH
+        BillingMode: PAY_PER_REQUEST
 
 functions:
   app:
